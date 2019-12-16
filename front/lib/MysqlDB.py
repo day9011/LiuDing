@@ -35,7 +35,7 @@ class MysqlDB(object):
     def connect(self): 
         try:
             self.db = pymysql.connect(host=self.__host, 
-                                port=self.__port,
+                                port=int(self.__port),
                                 user=self.__username,
                                 passwd=self.__password,
                                 db=self.__database, charset="utf8") 
