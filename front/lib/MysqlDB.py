@@ -34,10 +34,11 @@ class MysqlDB(object):
 
     def connect(self): 
         try:
-            self.db = pymysql.connect(self.__host, 
-                                self.__username,
-                                self.__password,
-                                self.__database, charset="utf8") 
+            self.db = pymysql.connect(host=self.__host, 
+                                port=self.__port,
+                                user=self.__username,
+                                passwd=self.__password,
+                                db=self.__database, charset="utf8") 
             self.cursor = self.db.cursor()
             num = self.cursor.execute("show tables")
             if num > 0:
