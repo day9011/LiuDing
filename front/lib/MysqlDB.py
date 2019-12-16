@@ -13,6 +13,7 @@ class MysqlDB(object):
     def __init__(self):
         self.__host = os.environ['MYSQL_HOST'].strip()
         self.__port = os.environ['MYSQL_PORT'].strip()
+        self.__username = os.environ['MYSQL_USER'].strip()
         self.__password = os.environ['MYSQL_PASS'].strip()
         self.__database = os.environ['MYSQL_DB'].strip()
         self.connect()
