@@ -23,17 +23,9 @@ from lib.MysqlDB import *
 logger = get_log()
 config = get_config()
 mongodb = MongoDB()
-mongo_uri = "mongodb://{}:{}@{}:{}/resource".format(
-config['mongodb']['username'],
-config['mongodb']['password'],
-config['mongodb']['host'],
-config['mongodb']['port'])
-mongodb.init(mongo_uri, "resource", "display")
+mongodb.init("resource", "display")
 
-mysqldb = MysqlDB(host=config['mysqldb']['host'],
-                username=config['mysqldb']['username'],
-                password=config['mysqldb']['password'],
-                dbname=config['mysqldb']['dbname'])
+mysqldb = MysqlDB()
 
 course_dict = {
     0: "math",

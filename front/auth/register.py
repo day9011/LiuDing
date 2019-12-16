@@ -18,10 +18,7 @@ from lib.MysqlDB import *
 
 logger = get_log()
 config = get_config()
-mysqldb = MysqlDB(host=config['mysqldb']['host'],
-                username=config['mysqldb']['username'],
-                password=config['mysqldb']['password'],
-                dbname=config['mysqldb']['dbname'])
+mysqldb = MysqlDB()
 
 @server.route('/register', methods=['GET', 'POST'])
 def Register():
@@ -91,3 +88,4 @@ def Register():
         info_str = json.dumps(info, ensure_ascii=False)
         logger.error(info_str)
         return json.dumps({'status': status, 'mes': str(e)})
+

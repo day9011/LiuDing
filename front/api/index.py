@@ -23,12 +23,7 @@ import subprocess
 logger = get_log()
 config = get_config()
 mongodb = MongoDB()
-mongo_uri = "mongodb://{}:{}@{}:{}/resource".format(
-config['mongodb']['username'],
-config['mongodb']['password'],
-config['mongodb']['host'],
-config['mongodb']['port'])
-mongodb.init(mongo_uri, "resource", "display")
+mongodb.init("resource", "display")
 
 @server.route('/index/display', methods=['POST'])
 def IndexDisplay():

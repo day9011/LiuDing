@@ -23,7 +23,7 @@ import subprocess
 logger = get_log()
 config = get_config()
 ResourceDB = MongoDB()
-ResourceDB.init("mongodb://day9011:5673914@121.40.82.87:15001", "resource", "display")
+ResourceDB.init("resource", "display")
 
 
 def get_personal_info(name):

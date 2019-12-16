@@ -5,16 +5,13 @@ import pymongo
 import os
 import datetime
 
-__all__ = ['init_db', 'get_db', 'get_label_db', 'MongoDB']
-
-__DB__ = None
 
 logger = get_log()
 
 class MongoDB(object):
-    def init(self, mongohost, dbname, collection):
+    def init(self, dbname, collection):
         try:
-            self.__mongohost = mongohost
+            self.__mongohost = os.environ['MONGO_URI'].strip()
             self.__dbname = dbname
             self.__collection = collection
             self._time_format = '%Y-%m-%d %H:%M:%S'
@@ -122,50 +119,5 @@ class MongoDB(object):
         except Exception as e:
             return False, str(e)
 
-def init_db(config):
-    global __DB__
-    if isinstance(__DB__, MongoDB):
-        return True
-    logger.info('its in init database')
-    mongo_client = os.environ['MONGO_URI']
-    dbname = config['db']['dbname']
-    collection = config['db']['collection']
-    __DB__ = MongoDB()
-    SYN = __DB__.init(mongo_client, dbname, collection)
-    if SYN:
-        return True
-    else:
-        __DB__ = None
-        return False
-
-#  def get_db(config):
-#      mongo_client = os.environ['MONGO_URI']
-#      dbname = config['db']['dbname']
-#      collection = config['db']['collection']
-#      db = MongoDB()
-#      SYN = db.init(mongo_client, dbname, collection)
-#      if SYN:
-#          return db
-#      else:
-        #  return False
-
-
-def get_db():
-    global __DB__
-    if isinstance(__DB__, MongoDB):
-        return __DB__
-    else:
-        return False
-
-
-def get_label_db():
-    mc_str = os.environ['AUDIO_DATA_FILTER_URI']
-    mc = pymongo.MongoClient(mc_str)
-    db = mc.audio_data_filter
-    if len(db.list_collection_names()) > 0:
-        col = db.label
-        return col
-    else:
-        return False
 
 

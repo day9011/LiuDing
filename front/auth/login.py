@@ -21,10 +21,7 @@ from utils.GetTime import get_expires
 
 logger = get_log()
 config = get_config()
-mysqldb = MysqlDB(host=config['mysqldb']['host'],
-                username=config['mysqldb']['username'],
-                password=config['mysqldb']['password'],
-                dbname=config['mysqldb']['dbname'])
+mysqldb = MysqlDB()
 __MAX_AGE = int(config['auth']['max_age'])
 
 @server.route('/login', methods=['GET', 'POST'])

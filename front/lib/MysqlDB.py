@@ -10,12 +10,11 @@ import json
 logger = get_log()
 
 class MysqlDB(object):
-    def __init__(self, host,
-                username, password, dbname):
-        self.__host = str(host).strip()
-        self.__username = str(username).strip()
-        self.__password = str(password).strip()
-        self.__database = str(dbname).strip()
+    def __init__(self):
+        self.__host = os.environ['MYSQL_HOST'].strip()
+        self.__port = os.environ['MYSQL_PORT'].strip()
+        self.__password = os.environ['MYSQL_PASS'].strip()
+        self.__database = os.environ['MYSQL_DB'].strip()
         self.connect()
 
     # def __init__(self, host, username, password, database):
