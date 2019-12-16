@@ -21,7 +21,7 @@ class MongoDB(object):
             return False
 
     def __connect(self):
-        self.__conn = pymongo.MongoClient(self.__mongohost)
+        self.__conn = pymongo.MongoClient(self.__mongohost.rstrip('/') + '/' + self.__dbname)
         self.__db = self.__conn[self.__dbname]
         self.__col = self.__db[self.__collection]
         return self.__check_connected()
@@ -36,8 +36,11 @@ class MongoDB(object):
                 else:
                     return False
             else:
-                self.__connect()
-            return True
+                col_list = self.__db.list_collection_names()
+                if len(col_list) > 0:
+                    return True
+                else:
+                    return False
         except Exception as e:
             logger.error(str(e))
             return False
