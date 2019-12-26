@@ -9,6 +9,7 @@ from utils.Log import get_log
 from api import server
 from hashlib import md5
 import datetime
+import time
 from urllib import parse
 import json
 import requests
@@ -87,7 +88,7 @@ def Login():
             token = gen_token()
 
             user_info = {
-                'time': time.time(),
+                'time': datetime.datetime.now(),
                 'token': token,
                 'role': account
             }

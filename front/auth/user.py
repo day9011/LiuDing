@@ -2,6 +2,7 @@
 
 from lib.Redis import RedisCli
 import time
+import datetime
 import json
 
 
@@ -50,7 +51,7 @@ class User:
                 except:
                     user_str = redis_r.decode('utf-8')
                 user_dict = json.loads(user_str)
-                user_dict['time'] = time.time()
+                user_dict['time'] = datetime.datetime.now()
                 insert_str = json.dumps(user_dict, ensure_ascii=False)
                 user_redis.set(username, insert_str, ex=timeout)
                 return True, 'OK'
