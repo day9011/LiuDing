@@ -19,11 +19,14 @@ from lib.MongoDB import MongoDB
 import base64
 import numpy as np
 import subprocess
+from auth.user import User
 
 logger = get_log()
 config = get_config()
 mongodb = MongoDB()
 mongodb.init("resource", "display")
+__MAX_AGE = int(config['auth']['max_age'])
+user_handler = User(__MAX_AGE)
 
 @server.route('/index/display', methods=['POST'])
 def IndexDisplay():
@@ -31,7 +34,11 @@ def IndexDisplay():
         status = 1
         try:
             account = request.cookies.get('account')
-            info = {'ip': request.remote_addr, 'url': request.url, 'interface': "IndexDisplay", 'method': 'POST', 'account': account}
+            info = {'ip': request.remote_addr,
+                    'url': request.url,
+                    'interface': "IndexDisplay", 
+                    'method': 'POST', 
+                    'account': account}
             info_str = json.dumps(info, ensure_ascii=False)
             logger.info(info_str)
             num = int(request.values.get('num', 0))
@@ -59,18 +66,44 @@ def IndexDisplay():
 @server.route('/index', methods=['GET'])
 def Index():
     if request.method == 'GET':
-        info = {'ip': request.remote_addr, 'url': request.url, 'interface': "Index", 'method': 'GET'}
-        info_str = json.dumps(info, ensure_ascii=False)
-        logger.info(info_str)
-        main_js = url_for('static', filename='js/main.js')
-        page = render_template('index.html', main=main_js)
-        account = request.cookies.get('account')
-        resp = make_response(page)
-        if 'account' not in session or account != session['account']:
-            try:
-                resp.delete_cookie('account')
-                resp.delete_cookie('token')
-                resp.delete_cookie('name')
-            except:
-                pass
-        return resp
+        try:
+            info = {'ip': request.remote_addr, 
+                    'url': request.url, 
+                    'interface': "Index", 
+                    'method': 'GET'}
+            info_str = json.dumps(info, ensure_ascii=False)
+            logger.info(info_str)
+            main_js = url_for('static', filename='js/main.js')
+            page = render_template('index.html', main=main_js)
+            account = request.cookies.get('account')
+            resp = make_response(page)
+            status, mes = user_handler.check_user(account, int(config['server']['timeout']))
+            info = {'username': account, 
+                    'status': status, 
+                    'message': mes, 
+                    'interface': 'check_user'}
+            info_str = json.dumps(info, ensure_ascii=False)
+            if status:
+                logger.info(info_str)
+            else:
+                logger.error(info_str)
+            if not status:
+                try:
+                    resp.delete_cookie('account')
+                    resp.delete_cookie('token')
+                    resp.delete_cookie('name')
+                except:
+                    pass
+            return resp
+        except Exception as e:
+            info = {'username': account, 
+                    'status': status, 
+                    'message': mes, 
+                    'interface': 'index'}
+            info_str = json.dumps(info, ensure_ascii=False)
+            logger.error(info_str)
+            main_js = url_for('static', filename='js/main.js')
+            page = render_template('index.html', main=main_js)
+            account = request.cookies.get('account')
+            resp = make_response(page)
+            return resp

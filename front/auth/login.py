@@ -16,13 +16,14 @@ from flask import request, session, redirect, render_template, url_for, make_res
 from lib.MysqlDB import *
 from utils.MakeToken import gen_token
 from utils.GetTime import get_expires
-
+from auth.user import User
 
 
 logger = get_log()
 config = get_config()
 mysqldb = MysqlDB()
 __MAX_AGE = int(config['auth']['max_age'])
+user_handler = User(__MAX_AGE)
 
 @server.route('/login', methods=['GET', 'POST'])
 def Login():
@@ -32,6 +33,23 @@ def Login():
             info = {'ip': request.remote_addr, 'url': request.url, 'interface': "Login", 'method': 'GET'}
             info_str = json.dumps(info, ensure_ascii=False)
             logger.info(info_str)
+            account = request.cookies.get('account')
+            status, mes = user_handler.check_user(account)
+            info = {'username': account, 
+                    'status': status, 
+                    'message': mes, 
+                    'interface': 'check_user'}
+            info_str = json.dumps(info, ensure_ascii=False)
+            if status:
+                logger.info(info_str)
+                content = redirect('/')
+                resp = make_response(content)
+                resp.set_cookie('account', account, max_age=__MAX_AGE)
+                resp.set_cookie('token', token, max_age=__MAX_AGE)
+                resp.set_cookie('name', name, max_age=__MAX_AGE)
+                return resp
+            else:
+                logger.error(info_str)
             main_js = url_for('static', filename='js/main.js')
             auth_js = url_for('static', filename='js/auth.js')
             return render_template('login.html', main=main_js, auth=auth_js)
@@ -62,12 +80,18 @@ def Login():
                 raise Exception("Authentication failed!")
 
             # get the name
-            sql_command = "SELECT student.name FROM account,student WHERE account.account='{}' and student.id=account.id".format(account)
+            sql_command = "SELECT student.name, account.role FROM account,student WHERE account.account='{}' and student.id=account.id".format(account)
             results = mysqldb.query(sql_command)
             name = results[0][0]
-
-            session['account'] = account
+            account = results[0][1]
             token = gen_token()
+
+            user_info = {
+                'time': time.time(),
+                'token': token,
+                'role': account
+            }
+            user_handler.insert_user_info(user_info)
             resp = make_response(json.dumps({'status': status, 'mes': 'login successfully'}))
             resp.set_cookie('account', account, max_age=__MAX_AGE)
             resp.set_cookie('token', token, max_age=__MAX_AGE)

@@ -5,19 +5,19 @@ import os
 import multiprocessing
 
 # worker config
-workers = 10
+workers = 16
 #  workers= multiprocessing.cpu_count() * 2 + 1
-worker_class = 'gevent'
+worker_class = 'tornado'
 worker_connections = 1000
 threads = 2
 
 bind = '0.0.0.0:9700'
 daemon = 'false'
 #pidfile = '/tmp/gunicorn.pid.ver'
-#  access_log_format = '%(t)s %(p)s %(h)s "%(r)s" %(s)s %(L)s %(b)s %(f)s" "%(a)s"'
-#  accesslog = '/tmp/gunicorn_access.log'
-#  errorlog = '/tmp/gunicorn_error.log'
-#  loglevel = 'info'
+access_log_format = '%(t)s %(p)s %(h)s "%(r)s" %(s)s %(L)s %(b)s %(f)s" "%(a)s"'
+accesslog = '/var/log/gunicorn_access.log'
+errorlog = '/var/log/gunicorn_error.log'
+loglevel = 'info'
 
 keepalive = 2
 timeout = 60

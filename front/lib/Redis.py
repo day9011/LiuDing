@@ -11,11 +11,11 @@ import redis
 logger = get_log()
 
 class RedisCli(object):
-    def __init__(self, host,
-                port, password):
+    def __init__(self, timeout=None):
         self.__host = os.environ['REDIS_HOST'].strip()
         self.__port = os.environ['REDIS_PORT'].strip()
         self.__password = os.environ['REDIS_PASS'].strip()
+        self.__timeout = timeout
         self.__pool = None
         self.__client = None
         self.connect()
@@ -36,8 +36,12 @@ class RedisCli(object):
 
     def connect(self): 
         try:
-            self.__pool = redis.ConnectionPool(host=self.__host, password=self.__password, port=self.__port, db=0)
-            self.__client = redis.Redis(connection_pool)
+            self.__pool = redis.ConnectionPool(host=self.__host,
+                                            password=self.__password,
+                                            port=self.__port,
+                                            db=0,
+                                            socket_connect_timeout=self.__timeout)
+            self.__client = redis.Redis(self.__pool)
             self.__client.get("username")
             return True
         except Exception as e:
