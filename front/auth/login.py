@@ -16,7 +16,6 @@ import requests
 from flask import request, session, redirect, render_template, url_for, make_response
 from lib.MysqlDB import *
 from utils.MakeToken import gen_token
-from utils.GetTime import get_expires
 from auth.user import User
 
 
@@ -24,7 +23,7 @@ logger = get_log()
 config = get_config()
 mysqldb = MysqlDB()
 __MAX_AGE = int(config['auth']['max_age'])
-user_handler = User(__MAX_AGE)
+user_handler = User(logger, __MAX_AGE)
 
 @server.route('/login', methods=['GET', 'POST'])
 def Login():
@@ -84,15 +83,14 @@ def Login():
             sql_command = "SELECT student.name, account.role FROM account,student WHERE account.account='{}' and student.id=account.id".format(account)
             results = mysqldb.query(sql_command)
             name = results[0][0]
-            account = results[0][1]
+            role = results[0][1]
             token = gen_token()
-
             user_info = {
                 'time': datetime.datetime.now(),
                 'token': token,
-                'role': account
+                'role': role
             }
-            user_handler.insert_user_info(user_info)
+            user_handler.insert_user_info(account, user_info)
             resp = make_response(json.dumps({'status': status, 'mes': 'login successfully'}))
             resp.set_cookie('account', account, max_age=__MAX_AGE)
             resp.set_cookie('token', token, max_age=__MAX_AGE)

@@ -36,12 +36,16 @@ class RedisCli(object):
 
     def connect(self): 
         try:
-            self.__pool = redis.ConnectionPool(host=self.__host,
-                                            password=self.__password,
-                                            port=self.__port,
-                                            db=0,
-                                            socket_connect_timeout=self.__timeout)
-            self.__client = redis.Redis(self.__pool)
+            # self.__pool = redis.ConnectionPool(host=self.__host,
+            #                                 password=self.__password,
+            #                                 port=self.__port,
+            #                                 db=0,
+            #                                 socket_connect_timeout=self.__timeout)
+            self.__client = redis.Redis(
+                                    host=self.__host,
+                                    password=self.__password,
+                                    port=self.__port,
+                                    db=0)
             self.__client.get("username")
             return True
         except Exception as e:

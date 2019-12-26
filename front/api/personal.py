@@ -7,7 +7,6 @@ from utils.Config import get_config
 from utils.Log import get_log
 from utils.Tools import *
 from flask import request, session, redirect, render_template, url_for
-from utils.GetTime import *
 from api import server
 import random
 

@@ -7,7 +7,6 @@ from utils.Config import get_config
 from utils.Log import get_log
 from utils.Tools import *
 from flask import request, session, redirect, render_template, url_for, make_response
-from utils.GetTime import *
 from api import server
 import random
 
@@ -20,13 +19,14 @@ import base64
 import numpy as np
 import subprocess
 from auth.user import User
+import datetime
 
 logger = get_log()
 config = get_config()
 mongodb = MongoDB()
 mongodb.init("resource", "display")
 __MAX_AGE = int(config['auth']['max_age'])
-user_handler = User(__MAX_AGE)
+user_handler = User(logger, __MAX_AGE)
 
 @server.route('/index/display', methods=['POST'])
 def IndexDisplay():
