@@ -66,6 +66,8 @@ def IndexDisplay():
 @server.route('/index', methods=['GET'])
 def Index():
     if request.method == 'GET':
+        status = 1
+        mes = 'OK'
         try:
             info = {'ip': request.remote_addr, 
                     'url': request.url, 
@@ -77,7 +79,7 @@ def Index():
             page = render_template('index.html', main=main_js)
             account = request.cookies.get('account')
             resp = make_response(page)
-            status, mes = user_handler.check_user(account, int(config['server']['timeout']))
+            status, mes = user_handler.check_user(account)
             info = {'username': account, 
                     'status': status, 
                     'message': mes, 
