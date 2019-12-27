@@ -37,7 +37,7 @@ class PhoneVerify:
             request.add_query_param('PhoneNumbers', phone_number)
             request.add_query_param('SignName', "柳丁教育系统")
             request.add_query_param('TemplateCode', "SMS_181495873")
-            request.add_query_param('TemplateParam', "{'code': '{}'}".format(str(verify_code)))
+            request.add_query_param('TemplateParam', json.dumps({'code': str(verify_code)}, ensure_ascii=False))
             response = self.client.do_action(request)
             self.logger.info(str(response, encoding = 'utf-8'))
             response = json.loads(str(response, encoding = 'utf-8'))
