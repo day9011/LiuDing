@@ -9,16 +9,22 @@ from utils.Log import get_log
 from api import server
 from hashlib import md5
 import datetime
+import re
 from urllib import parse
 import json
 import requests
 from flask import request, session, redirect, render_template, url_for
 from lib.MysqlDB import *
+from auth.phone import PhoneVerify
 
 
 logger = get_log()
 config = get_config()
 mysqldb = MysqlDB()
+
+phone_handler = PhoneVerify(logger)
+phone_pattern = re.compile(r'[0-9]{11}')
+code_pattern = re.compile(r'[0-9]{6}')
 
 @server.route('/register', methods=['GET', 'POST'])
 def Register():
@@ -89,3 +95,53 @@ def Register():
         logger.error(info_str)
         return json.dumps({'status': status, 'mes': str(e)})
 
+@server.route('/register/phone_code', methods=['POST'])
+def MakePhoneCode():
+    status = 1
+    try:
+        if request.method == 'POST':
+            info = {'ip': request.remote_addr,
+                    'url': request.url,
+                    'interface': "MakePhoneCode",
+                    'method': 'GET'}
+            info_str = json.dumps(info, ensure_ascii=False)
+            logger.info(info_str)
+            phone_number = str(request.values.get('phone', None))
+            if not re.match(phone_pattern, phone_number):
+                status = -100
+                raise Exception("error phone number format:{}".format(phone_number))
+            verify_code = phone_handler.send_code(phone_number)
+            return json.dumps({'status': status, 'code': verify_code}, ensure_ascii=False)
+    except Exception as e:
+        if status == 1:
+            status = -10000
+        info = {'interface': "MakePhoneCode", 'message': str(e)}
+        info_str = json.dumps(info, ensure_ascii=False)
+        logger.error(info_str)
+        return json.dumps({'status': status, 'mes': str(e)})
+
+@server.route('/register/verify_code', methods=['POST'])
+def VerifyPhoneCode():
+    status = 1
+    try:
+        if request.method == 'POST':
+            info = {'ip': request.remote_addr,
+                    'url': request.url,
+                    'interface': "MakePhoneCode",
+                    'method': 'GET'}
+            info_str = json.dumps(info, ensure_ascii=False)
+            logger.info(info_str)
+            phone_number = str(request.values.get('phone', None))
+            phone_code = str(request.values.get('code', None))
+            if not (re.match(code_pattern, phone_code) and re.match(phone_pattern, phone_code)):
+                status = -101
+                raise Exception("error verify code format:{}".format(phone_number))
+            verify_code = phone_handler.verify_code(phone_number, phone_code)
+            return json.dumps({'status': status, 'mes': 'verify successfully'}, ensure_ascii=False)
+    except Exception as e:
+        if status == 1:
+            status = -10000
+        info = {'interface': "MakePhoneCode", 'message': str(e)}
+        info_str = json.dumps(info, ensure_ascii=False)
+        logger.error(info_str)
+        return json.dumps({'status': status, 'mes': str(e)})
