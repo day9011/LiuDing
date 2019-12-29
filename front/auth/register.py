@@ -133,7 +133,7 @@ def VerifyPhoneCode():
             logger.info(info_str)
             phone_number = str(request.values.get('phone', None))
             phone_code = str(request.values.get('code', None))
-            if not (re.match(code_pattern, phone_code) and re.match(phone_pattern, phone_code)):
+            if not (re.match(code_pattern, phone_code) and re.match(phone_pattern, phone_number)):
                 status = -101
                 raise Exception("error verify code format:{}".format(phone_number))
             verify_code = phone_handler.verify_code(phone_number, phone_code)
