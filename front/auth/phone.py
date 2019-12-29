@@ -55,8 +55,19 @@ class PhoneVerify:
         return str(random.randint(0, 999999)).zfill(6)
     
     def verify_code(self, phone_number, code):
-        true_code = self.redis_cli.get('PhoneVerify_{}'.format(phone_number))
-        if true_code != code:
+        try:
+            true_code = self.redis_cli.get('PhoneVerify_{}'.format(phone_number))
+            if true_code != code:
+                raise Exception("error verify code, true code:{}, get code:{}".format(true_code, code))
+            else:
+                info_dict = {'interface': 'PhoneVerify verify_code',
+                            'phone': phone_number,
+                            'message': '{} verify successfully'.format(code)}
+                info_str = json.dumps(info_dict, ensure_ascii=False)
+                self.logger.info(info_str)
+                return True
+        except Exception as e:
+            info_dict = {'interface': 'PhoneVerify verify_code', 'error': str(e)}
+            info_str = json.dumps(info_dict, ensure_ascii=False)
+            self.logger.error(info_str)
             return False
-        else:
-            return True
