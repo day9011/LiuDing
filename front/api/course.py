@@ -103,7 +103,13 @@ def CourseSignup():
         status = 1
         try:
             account = request.cookies.get('account')
-            if 'account' in session and session['account'] == account:
+            status, mes = user_handler.check_user(account)
+            info = {'username': account, 
+                    'status': status, 
+                    'message': mes, 
+                    'interface': 'check_user'}
+            info_str = json.dumps(info, ensure_ascii=False)
+            if status:
                 info = {'ip': request.remote_addr, 'url': request.url, 'interface': "CourseSignup"}
                 info_str = json.dumps(info, ensure_ascii=False)
                 logger.info(info_str)
@@ -121,18 +127,16 @@ def CourseSignup():
                     'signup_time': datetime.datetime.now()
                 }
                 mongodb.insert_one(insert_dict)
-                ret_str = json.dumps({'status': status, 'mes': 'OK'})
+                content = json.dumps({'status': status, 'mes': 'OK'})
+                resp = make_response(content)
             else:
-                ret_str = json.dumps({'status': status, 'mes': "not login"})
-            
-            if not ('account' in session and session['account'] == account):
-                try:
-                    resp.delete_cookie('account')
-                    resp.delete_cookie('token')
-                    resp.delete_cookie('name')
-                except:
-                    pass
-            return ret_str
+                logger.error(info_str)
+                content = redirect(json.dumps({'status': status, 'mes': 'not login'}))
+                resp = make_response(content)
+                resp.delete_cookie('account')
+                resp.delete_cookie('token')
+                resp.delete_cookie('name')
+            return resp
         except Exception as e:
             if status == 1:
                 status = -10000
@@ -147,28 +151,34 @@ def CourseQuery():
     if request.method == 'GET':
         status = 1
         try:
+            info = {'ip': request.remote_addr, 'url': request.url, 'interface': "CourseQuery"}
+            info_str = json.dumps(info, ensure_ascii=False)
+            logger.info(info_str)
             account = request.cookies.get('account')
-            if 'account' in session and session['account'] == account:
-                info = {'ip': request.remote_addr, 'url': request.url, 'interface': "CourseQuery"}
-                info_str = json.dumps(info, ensure_ascii=False)
-                logger.info(info_str)
+            status, mes = user_handler.check_user(account)
+            info = {'username': account, 
+                    'status': status, 
+                    'message': mes, 
+                    'interface': 'check_user'}
+            info_str = json.dumps(info, ensure_ascii=False)
+            if status:
                 sql_command = "SELECT * FROM course, teacher WHERE course.tid=teacher.id"
                 courses = mysqldb.query(sql_command)
                 courses = [parse_course(x) for x in courses]
                 courses = sort_courses(courses)
-                ret_str = json.dumps({'status': status, 'courses': courses}, ensure_ascii=False)
+                content = json.dumps({'status': status, 'courses': courses}, ensure_ascii=False)
+                resp = make_response(content)
             else:
-                ret_str = json.dumps({'status': status, 'mes': "not login"})
-            
-            if not ('account' in session and session['account'] == account):
-                try:
-                    resp.delete_cookie('account')
-                    resp.delete_cookie('token')
-                    resp.delete_cookie('name')
-                except:
-                    pass
-            return ret_str
+                logger.error(info_str)
+                content = redirect(json.dumps({'status': status, 'mes': 'not login'}))
+                resp = make_response(content)
+                resp.delete_cookie('account')
+                resp.delete_cookie('token')
+                resp.delete_cookie('name')
+            return resp
         except Exception as e:
+            if status == 1:
+                status = -10001
             info = {'interface': "CourseQuery", 'message': str(e)}
             info_str = json.dumps(info, ensure_ascii=False)
             logger.error(info_str)
