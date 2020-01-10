@@ -22,8 +22,8 @@ from auth.user import User
 
 logger = get_log()
 config = get_config()
-mongodb = MongoDB()
-mongodb.init("resource", "display")
+mongo = MongoDB()
+debug = config['server']['debug']
 
 mysqldb = MysqlDB()
 __MAX_AGE = int(config['auth']['max_age'])
@@ -126,7 +126,8 @@ def CourseSignup():
                     'grade': int(grade),
                     'signup_time': datetime.datetime.now()
                 }
-                mongodb.insert_one(insert_dict)
+                col = mongo.get_col('front', 'course_signup')
+                col.insert_one(insert_dict)
                 content = json.dumps({'status': status, 'mes': 'OK'})
                 resp = make_response(content)
             else:
@@ -161,6 +162,8 @@ def CourseQuery():
                     'message': mes, 
                     'interface': 'check_user'}
             info_str = json.dumps(info, ensure_ascii=False)
+            if debug:
+                status = True
             if status:
                 sql_command = "SELECT * FROM course, teacher WHERE course.tid=teacher.id"
                 courses = mysqldb.query(sql_command)
@@ -183,3 +186,5 @@ def CourseQuery():
             info_str = json.dumps(info, ensure_ascii=False)
             logger.error(info_str)
             return json.dumps({'status': status, 'mes': str(e)})
+
+

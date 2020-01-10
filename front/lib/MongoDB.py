@@ -9,47 +9,45 @@ import datetime
 logger = get_log()
 
 class MongoDB(object):
-    def init(self, dbname, collection):
+    def __init__(self):
         try:
             self.__mongohost = os.environ['MONGO_URI'].strip()
-            self.__dbname = dbname
-            self.__collection = collection
             self._time_format = '%Y-%m-%d %H:%M:%S'
-            return self.__connect()
+            self.__connect()
         except Exception as e:
             print(str(e))
-            return False
+
 
     def __connect(self):
-        self.__conn = pymongo.MongoClient(self.__mongohost.rstrip('/') + '/' + self.__dbname)
-        self.__db = self.__conn[self.__dbname]
-        self.__col = self.__db[self.__collection]
+        self.__conn = pymongo.MongoClient(self.__mongohost.rstrip('/'))
         return self.__check_connected()
 
 
     def __check_connected(self):
         try:
-            if self.__conn:
-                col_list = self.__db.list_collection_names()
-                if len(col_list) > 0:
-                    return True
-                else:
-                    return False
+            if len(self.__conn.list_database_names()) > 0:
+                return True
             else:
-                col_list = self.__db.list_collection_names()
-                if len(col_list) > 0:
-                    return True
-                else:
-                    return False
+                return False
         except Exception as e:
             logger.error(str(e))
             return False
+    
+    def get_mc(self):
+        if self.__check_connected:
+            return self.__conn
+        else:
+            if self.__connect():
+                return self.__conn
+            else:
+                return False
 
-    def get_col(self):
+    def get_col(self, db, col):
         try:
             if not self.__check_connected():
                 raise Exception("connect mongo db error")
-            return self.__col
+            col = self.__conn[db][col]
+            return col
         except Exception as e:
             return False, str(e)
 

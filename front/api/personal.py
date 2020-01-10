@@ -21,8 +21,7 @@ import subprocess
 
 logger = get_log()
 config = get_config()
-ResourceDB = MongoDB()
-ResourceDB.init("resource", "display")
+mongo = MongoDB()
 
 
 def get_personal_info(name):

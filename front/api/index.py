@@ -24,7 +24,6 @@ import datetime
 logger = get_log()
 config = get_config()
 mongodb = MongoDB()
-mongodb.init("resource", "display")
 __MAX_AGE = int(config['auth']['max_age'])
 user_handler = User(logger, __MAX_AGE)
 
@@ -45,7 +44,7 @@ def IndexDisplay():
             if num < 1:
                 status = -10
                 raise Exception('the num param error')
-            col = mongodb.get_col()
+            col = mongodb.get_col('front', 'display')
             base64_imgs = []
             for i in col.find({'page': 'index',
                     'time': {"$gte": datetime.datetime(2019, 10, 22, 0, 0, 0)}},
