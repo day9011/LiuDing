@@ -58,7 +58,6 @@ function load_courses() {
         url: "/course/query",
         type: "HTTP",
         method: "GET",
-        data: formData,
         contentType: false,
         cache: false,
         processData: false,
@@ -94,6 +93,7 @@ function load_courses() {
 }
 
 $(function() {
+    load_courses();
     M.AutoInit();
     M.updateTextFields();
 });
