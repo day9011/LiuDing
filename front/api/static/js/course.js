@@ -66,7 +66,7 @@ function load_courses() {
             console.log(ret);
             if (Boolean(ret['status']) === true) {
                 var table = $("#course_table");
-                ret['course'].forEach(function(subject) {
+                ret['courses'].forEach(function(subject) {
                     var td1 = "<td>" + String(subject['subject']) + "</td>";
                     var td2 = "<td>" + String(subject['grade']) + "</td>";
                     if (Number(subject['term']) === 0) {
@@ -76,7 +76,9 @@ function load_courses() {
                         var term = "下学期学期";
                     }
                     var td3 = "<td>" + term + "</td>";
-                    var td4 = "<td>" + make_date(subject['date']) + "</td>";
+                    var date =  make_date(subject['date']);
+                    console.log(date);
+                    var td4 = "<td>" + date + "</td>";
                     var td5 = "<td>" + String(subject['fee']) + "</td>";
                     var tr = "<tr>" + td1 + td2 + td3 + td4 + td5 + "</tr>";
                     table.append(tr);
