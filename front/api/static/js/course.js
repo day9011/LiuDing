@@ -1,6 +1,7 @@
 function make_date(arr) {
     var date = "";
     arr.forEach(function(str) {
+        console.log(str);
         if (Number(str) === 1) {
             if (!date) { 
                 date += "星期一";
@@ -51,6 +52,7 @@ function make_date(arr) {
             }
         }
     })
+    return date;
 }
 
 function load_courses() {
@@ -73,10 +75,11 @@ function load_courses() {
                         var term = "上学期";
                     }
                     else {
-                        var term = "下学期学期";
+                        var term = "下学期";
                     }
                     var td3 = "<td>" + term + "</td>";
-                    var date =  make_date(subject['date']);
+                    var date = make_date(subject['date']);
+                    date += ':' + subject['time'];
                     console.log(date);
                     var td4 = "<td>" + date + "</td>";
                     var td5 = "<td>" + String(subject['fee']) + "</td>";
