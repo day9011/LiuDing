@@ -4,6 +4,7 @@
 	{% include 'head.html' %}
 	<title>课程</title>
 	<script src="{{main}}"></script>
+	<script src="{{course}}"></script>
 </head>
 <body>
 	{% include 'header.html' %}
@@ -34,10 +35,9 @@
 				<div class="col m10 s10 container center-align">
 					<div class="container center-align">
 						<h3>课程报名</h3>
-						<table class="responsive-table centered highlight striped">
+						<table id="course_table" class="responsive-table">
 							<thead>
 								<tr>
-									<th data-filed="choice">选择</th>
 									<th data-field="subject">科目</th>
 									<th data-field="grade">年级</th>
 									<th data-field="term">学期</th>

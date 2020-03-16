@@ -30,15 +30,15 @@ __MAX_AGE = int(config['auth']['max_age'])
 user_handler = User(logger, __MAX_AGE)
 
 course_dict = {
-    0: "math",
-    1: "chinese",
-    2: "english"
+    0: "数学",
+    1: "语文",
+    2: "英语"
 }
 
 time_dict = {
-    0: "morning",
-    1: "afternoon",
-    2: "evening"
+    0: "上午",
+    1: "下午",
+    2: "晚上"
 }
 
 def parse_course(course):
@@ -79,7 +79,8 @@ def CourseIndex():
                 info_str = json.dumps(info, ensure_ascii=False)
                 logger.info(info_str)
                 main_js = url_for('static', filename='js/main.js')
-                content = render_template('course.html', main=main_js)
+                course_js = url_for('static', filename='js/course.js')
+                content = render_template('course.html', main=main_js, course=course_js)
                 resp = make_response(content)
             else:
                 logger.error(info_str)
