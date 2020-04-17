@@ -1,0 +1,9 @@
+{
+  "component": true,
+  "usingComponents": {
+    "math": "./math/math",
+    "article": "./article/article",
+    "english": "./english/english",
+    "student": "./student/student"
+  }
+}

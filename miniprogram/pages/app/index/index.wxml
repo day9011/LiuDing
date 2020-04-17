@@ -1,0 +1,12 @@
+<view class='container'>
+  <view class='tab-wrapper'>
+    <view id='tabmath' class='tab-block {{currentTab === 11 ? "tab-active":""}}' bindtap='switchTab'>奥数难题</view>
+    <view id='tabarticle' class='tab-block {{currentTab === 12 ? "tab-active":""}}' bindtap='switchTab'>优秀作文</view>
+    <view id='tabenglish' class='tab-block {{currentTab === 13 ? "tab-active":""}}' bindtap='switchTab'>英语天地</view>
+    <view id='tabstudent' class='tab-block {{currentTab === 14 ? "tab-active":""}}' bindtap='switchTab'>优秀学员</view>
+  </view>
+  <view class='content-wrapper' wx:if='{{currentTab === 11}}'><math/></view>
+  <view class='content-wrapper' wx:if='{{currentTab === 12}}'><article/></view>
+  <view class='content-wrapper' wx:if='{{currentTab === 13}}'><english/></view>
+  <view class='content-wrapper' wx:if='{{currentTab === 14}}'><student/></view>
+</view>

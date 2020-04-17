@@ -1,0 +1,9 @@
+{
+  "usingComponents":{
+    "index": "./index/index",
+    "offlineCourse": "./offlineCourse/offlineCourse",
+    "onlineCourse": "./onlineCourse/onlineCourse",
+    "onlineTest": "./onlineTest/onlineTest",
+    "personal": "./personal/personal"
+  }
+}

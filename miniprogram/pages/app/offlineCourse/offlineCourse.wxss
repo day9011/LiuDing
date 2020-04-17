@@ -1,0 +1,69 @@
+/**index.wxss**/
+.container{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  background: #fafafa;
+}
+
+.inline-block {
+  flex: 1;
+  display: inline-flex;
+}
+
+.title{
+  width: 100%;
+  text-align: center;
+  font-size: 50rpx;
+  font-weight: 900
+}
+.tableView{
+  border:1px solid #000;
+  border-right:0;
+  border-bottom: 0;
+  width: 98%;
+  margin-left: 1%;
+}
+/* 表头 */
+.table_header{
+  display: flex;
+  justify-content: space-between; /* 项目位于各行之间留有空白的容器内。 */
+  background-color: #fffb00;
+  width: 100%;
+  font-size: 35rpx;
+  color: #330e0e;
+  text-align: center;
+  font-weight: 900;
+} 
+.th{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80rpx;
+  border-bottom: 1px solid #000;
+  border-right: 1px solid #000;
+  width: 12.5%
+}
+
+/* 表格cell */
+.table_cell{
+  display: flex;
+  justify-content: space-between; /* 项目位于各行之间留有空白的容器内。 */
+  width: 100%;
+  font-size: 25rpx;
+  color: #330e0e;
+  text-align: center;
+}
+.td{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60rpx;
+  border-bottom: 1px solid #000;
+  border-right: 1px solid #000;
+  width: 12.5%
+} 
