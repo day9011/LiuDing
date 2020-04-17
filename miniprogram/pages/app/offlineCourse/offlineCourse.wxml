@@ -8,7 +8,7 @@
     <view class="th">课程时间</view>
     <view class="th">所属教室</view>
     <view class="th">主讲人</view>
-    <view class="th"><a bindtap="signup">线上报名</a></view>
+    <view class="th">线上报名</view>
   </view>
   <view class="table_cell">
     <view class="td">6</view>
@@ -18,57 +18,6 @@
     <view class="td">周六上午</view>
     <view class="td">307</view>
     <view class="td">刘二桥</view>
-    <view class="td"><a bindtap="signup">线上报名</a></view>
+    <view class="td"><a bindtap="signup">点击报名</a></view>
   </view>
-  <view class="table_cell">
-    <view class="td">6</view>
-    <view class="td">上</view>
-    <view class="td">作文</view>
-    <view class="td">1</view>
-    <view class="td">周六上午</view>
-    <view class="td">307</view>
-    <view class="td">刘二桥</view>
-    <view class="td">点击报名</view>
-  </view>
-  <view class="table_cell">
-    <view class="td">6</view>
-    <view class="td">上</view>
-    <view class="td">作文</view>
-    <view class="td">1</view>
-    <view class="td">周六上午</view>
-    <view class="td">307</view>
-    <view class="td">刘二桥</view>
-    <view class="td">点击报名</view>
-  </view>
-  <view class="table_cell">
-    <view class="td">6</view>
-    <view class="td">上</view>
-    <view class="td">作文</view>
-    <view class="td">1</view>
-    <view class="td">周六上午</view>
-    <view class="td">307</view>
-    <view class="td">刘二桥</view>
-    <view class="td">点击报名</view>
-  </view>
-  <view class="table_cell">
-    <view class="td">6</view>
-    <view class="td">上</view>
-    <view class="td">作文</view>
-    <view class="td">1</view>
-    <view class="td">周六上午</view>
-    <view class="td">307</view>
-    <view class="td">刘二桥</view>
-    <view class="td">点击报名</view>
-  </view>
-  <view class="table_cell">
-    <view class="td">6</view>
-    <view class="td">上</view>
-    <view class="td">作文</view>
-    <view class="td">1</view>
-    <view class="td">周六上午</view>
-    <view class="td">307</view>
-    <view class="td">刘二桥</view>
-    <view class="td">点击报名</view>
-  </view> 
-
 </view>
