@@ -5,7 +5,7 @@
   </view>
   <view class="container">
     <swiper>
-      <swiper-item wx:for="{{imgUrls}}">
+      <swiper-item wx:for="{{imgUrls}}" wx:key="*this">
         <image src='{{item}}' width="335" height="150" mode='widthFix' class='img' />
       </swiper-item>
     </swiper>

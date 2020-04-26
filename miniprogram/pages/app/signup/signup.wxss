@@ -1,1 +1,42 @@
-/* pages/app/signup/signup.wxss */
+@import "/libs/weui.wxss";
+.container{
+  display: block;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  background: #fafafa
+}
+
+.main {
+  display: block;
+  width: 100%;
+}
+
+.content {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.label-text{
+  text-align: center;
+  display: flex;
+  vertical-align: middle;
+}
+
+.select-box {
+  display: flex;
+  width: 80px;
+}
+
+.radio-box {
+  display: flex;
+  width: 80px;
+}
+.picker{
+    padding: 13px;
+    background-color: gray;
+}

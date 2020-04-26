@@ -1,2 +1,64 @@
-<!--pages/app/signup/signup.wxml-->
-<text>pages/app/signup/signup.wxml</text>
+<view class="container">
+  <view class="main">
+    <view class="content">
+      <picker bindchange="GradeChange" value="{{grade_options.grade_index}}" range="{{grade_options.array}}">
+        <view class="picker">
+          年级 {{grade_options.array[grade_index]}}
+        </view>
+      </picker>
+    </view>
+  </view>
+  <view class="main">
+    <view class="content">
+      <label class="label-text" style="margin-left: 10px">学期</label>
+      <radio-group  bindchange="radioChange">
+          <radio wx:for-items="{{items}}" wx:key="name" value="{{item.name}}" checked="{{item.checked}}">
+              <text>{{item.name}}</text>
+          </radio>
+      </radio-group>
+    </view>
+  </view>
+  <view class="content">
+    <view class="content">
+    <picker bindchange="SubjectChange" value="{{subject_options.subject_index}}" range="{{subject_options.array}}">
+      <view class="picker">
+        科目 {{subject_options.array[subject_index]}}
+      </view>
+    </picker>
+  </view>
+    <view class="content">
+    <picker bindchange="ClassTimeChange" value="{{class_times.time_index}}" range="{{class_times.array}}">
+      <view class="picker">
+        课程时间 {{class_times.array[time_index]}}
+      </view>
+    </picker>
+  </view>
+  </view>
+  <view class="main">
+    <view class="content">
+      费用 <label>{{fee}}</label>
+    </view>
+  </view>
+  <view class="main">
+    <view class="main">
+      <view class="content">信息校对</view>
+    </view>
+    <view class="main">
+      <view class="content">
+        <view class="content">姓名</view><view class="content"><input bindinput="NameInput" placeholder="输入姓名"/></view>
+        <view class="content">年级</view><view class="content"><input bindinput="GradeInput" placeholder="输入年级"/></view>
+      </view>
+    </view>
+    <view class="main">
+      <view class="content">
+        <view class="content">监护人姓名</view><view class="content"><input bindinput="ParentInput" placeholder="输入监护人姓名"/></view>
+        <view class="content">联系电话</view><view class="content"><input bindinput="PhoneInput" placeholder="输入父母电话"/></view>
+      </view>
+    </view>
+    <view class="main">
+      <view class="content">
+        <button type="default" size="default" bindtap="Submit">确认报名</button>
+      </view>
+    </view>
+  </view>
+</view>
